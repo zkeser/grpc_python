@@ -1,0 +1,24 @@
+syntax = 'proto3';
+
+package greet;
+
+service Greeter{
+    rpc SayHello (HelloRequest) returns (HelloResponse);
+    rpc ParrotSaysHello (HelloRequest) returns (stream HelloResponse);
+    rpc ChattyClientSaysHello(stream HelloRequest) returns (DelayedResponse);
+    rpc InteractingHello (stream HelloRequest) returns (stream HelloResponse);
+}
+
+message HelloRequest{
+    string name = 1; 
+    string greeting = 2;
+}
+
+message DelayedResponse{
+    string  message = 1;
+    repeated HelloRequest request = 2;
+}
+
+message HelloResponse{
+    string message = 1;
+}
