@@ -51,7 +51,7 @@ def serve():
     greet_pb2_grpc.add_GreeterServicer_to_server(GreeterServicer(), server)
     server.add_insecure_port(host)
     server.start()
-    print("Listing at %s" %(host) )
+    print("Listening at %s" %(host) )
     server.wait_for_termination()   
 
 if __name__ == '__main__':
