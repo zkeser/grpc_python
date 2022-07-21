@@ -1,0 +1,87 @@
+/*
+ * BEGIN_COPYRIGHT
+ *
+ * IBM Confidential
+ * OCO Source Materials
+ *
+ * 5727-I17
+ * (C) Copyright IBM Corp. 2019 All Rights Reserved.
+ *
+ * The source code for this program is not published or otherwise
+ * divested of its trade secrets, irrespective of what has been
+ * deposited with the U.S. Copyright Office.
+ *
+ * END_COPYRIGHT
+*/
+
+syntax = "proto3";
+package wire.readingcomprehension.v1;
+
+/**
+   The service for getting answer(s) to a question
+*/
+service ReadingComprehension {
+    rpc FindAnswers (QueryPassagePair) returns (FoundAnswers);
+    rpc FindAnswersForPassages (QueryWithPassages) returns (FoundAnswersForPassages);
+    rpc StatusCheck (StatusCheckRequest) returns (Status);
+}
+
+/**
+    Service status check request.
+*/
+message StatusCheckRequest {
+
+}
+
+/**
+    Status and information of the service.
+*/
+message Status {
+    string model_description = 1;
+    string modeling_notes = 2;
+}
+
+/**
+    Given a question and a passage, returns up to max_num_answers answers,
+    represented as message Answer instances in the FoundAnswers.
+*/
+message QueryPassagePair {
+    string question = 1;
+    string passage = 2;
+    uint32 max_num_answers = 3;
+    float min_score_threshold = 4;
+}
+
+/**
+    Given a question and one or more passage, returns up to max_num_answers_per_passage answers
+    for each passage, represented as message FoundAnswers instances in the FoundAnswersForPassages.
+*/
+message QueryWithPassages {
+    string question = 1;
+    repeated string passages = 2;
+    uint32 max_num_answers_per_passage = 3;
+    float min_score_threshold = 4;
+}
+
+/**
+    An answer or answers to a question containing the text,
+    byte/token offsets, and score for each answer.
+*/
+message FoundAnswers {
+    message Answer {
+        uint32 start_char_offset = 1;
+        uint32 end_char_offset = 2;
+        float confidence_score = 3;
+        string text = 4;
+    };
+
+    repeated Answer answer = 1;
+}
+
+/**
+    Repeated FoundAnswers where the i-th FoundAnswers corresponds to the i-th passage
+    in the QueryWithPassages request.
+*/
+message FoundAnswersForPassages {
+    repeated FoundAnswers answers = 1;
+}
