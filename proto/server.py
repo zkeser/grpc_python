@@ -8,19 +8,17 @@ from gamma_pb2 import Status, StatusCheckRequest, QueryPassagePair, FoundAnswers
     QueryWithPassages, FoundAnswersForPassages
 import json
 from primeqa.primeqa.pipelines.extractive_mrc_pipeline import MRCPipeline
-reader = MRCPipeline("PrimeQA/tydiqa-primary-task-xlm-roberta-large")
+reader = MRCPipeline("PrimeQA/squad-v1-xlm-roberta-large")
 # import greet_pb2
 # import greet_pb2_grpc
 
 class ReadingComprehensionServicer(gamma_pb2_grpc.ReadingComprehensionServicer):
-    def FindAnswers(self, request, context):
-        question = "Which country is Canberra located in?"
-        context = """Canberra is the capital city of Australia. 
-        Founded following the federation of the colonies of Australia 
-        as the seat of government for the new nation, it is Australia's 
-        largest inland city"""
-        answers = reader.predict(question, context)
-        return print(json.dumps(answers, indent=4))
+    def FindAnswers(self, request, context) -> FoundAnswers:
+        print("Request was made")
+        answers = reader.predict(request.question, request.passage)
+        reply = gamma_pb2.FoundAnswers()
+        reply.message = json.dumps(answers, indent=4)
+        return reply
     # class GreeterServicer(greet_pb2_grpc.GreeterServicer):
 #     def SayHello(self, request, context):
 #         print("SayHello Request Made: \n")
