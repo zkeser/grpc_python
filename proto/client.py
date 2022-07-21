@@ -21,7 +21,7 @@ from gamma_pb2 import QueryPassagePair
 
 def run():
     host = "localhost:50052"
-    with grpc.insecure_channel(host) as channel:
+    with grpc.insecure_channel(host, options=(('grpc.enable_http_proxy', 0),)) as channel:
         stub = gamma_pb2_grpc.ReadingComprehensionStub(channel)
         question = "Which country is Canberra located in?"
         context = """Canberra is the capital city of Australia. 

@@ -16,9 +16,10 @@ class ReadingComprehensionServicer(gamma_pb2_grpc.ReadingComprehensionServicer):
     def FindAnswers(self, request, context) -> FoundAnswers:
         print("Request was made")
         answers = reader.predict(request.question, request.passage)
-        reply = gamma_pb2.FoundAnswers()
-        reply.message = json.dumps(answers, indent=4)
-        return reply
+        print(answers)
+        # reply = gamma_pb2.FoundAnswers()
+        # reply.text = json.dumps(answers, indent=4)
+        # return reply
     # class GreeterServicer(greet_pb2_grpc.GreeterServicer):
 #     def SayHello(self, request, context):
 #         print("SayHello Request Made: \n")
