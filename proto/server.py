@@ -7,7 +7,7 @@ import gamma_pb2
 from gamma_pb2 import Status, StatusCheckRequest, QueryPassagePair, FoundAnswers, \
     QueryWithPassages, FoundAnswersForPassages
 import json
-from primeqa.primeqa.pipelines.extractive_mrc_pipeline import MRCPipeline
+from primeqa.pipelines.extractive_mrc_pipeline import MRCPipeline
 reader = MRCPipeline("PrimeQA/squad-v1-xlm-roberta-large")
 # import greet_pb2
 # import greet_pb2_grpc
